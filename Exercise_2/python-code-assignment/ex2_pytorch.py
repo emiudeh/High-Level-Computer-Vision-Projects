@@ -105,9 +105,11 @@ class MultiLayerPerceptron(nn.Module):
         # hidden_layers[-1] --> num_classes                                             #
         # Make use of linear and relu layers from the torch.nn module                   #
         #################################################################################
-        layes = []
+        layers = []
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-
+        layers.append(nn.Linear(input_size,hidden_size[0],bias=True))
+        layers.append(nn.ReLU())
+        layers.append(nn.Linear(hidden_size[0],num_classes))
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         self.layers = nn.Sequential(*layers)
@@ -120,7 +122,11 @@ class MultiLayerPerceptron(nn.Module):
         # nn.CrossEntropyLoss() already integrates the softmax and the log loss together#
         #################################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-
+        # x : batch of images
+        x = x.view(-1,input_size)  # flatten the multidimension images
+        x = self.layers[0](x)
+        x = self.layers[1](x)
+        out = self.layers[-1](x)
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         return out
@@ -150,7 +156,11 @@ if train:
             # Use examples in https://pytorch.org/tutorials/beginner/pytorch_with_examples.html
             #################################################################################
             # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-
+            prediction = model(images)
+            loss = criterion(prediction,labels)
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
 
 
 
@@ -171,14 +181,15 @@ if train:
             for images, labels in val_loader:
                 images = images.to(device)
                 labels = labels.to(device)
+                import pdb
                 ####################################################
                 # TODO: Implement the evaluation code              #
                 # 1. Pass the images to the model                  #
                 # 2. Get the most confident predicted class        #
                 ####################################################
                 # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-
-
+                model_output = model(images)
+                _,predicted = torch.max(model_output,1)
 
                 # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
                 total += labels.size(0)
