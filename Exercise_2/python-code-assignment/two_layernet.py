@@ -83,8 +83,17 @@ class TwoLayerNet(object):
         # of shape (N, C).                                                          #
         #############################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
+        z2 = np.dot(X, W1) + b1
 
-        pass
+        # perform Relu
+        a2 = abs(z2) * (z2 > 0)
+
+        z3 = np.dot(a2, W2) + b2
+
+        # compute softmax
+        a3 = np.exp(z3).T
+        scores = (a3/a3.sum(axis=0)).T
+
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
@@ -102,7 +111,17 @@ class TwoLayerNet(object):
         #############################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         # Implement the loss for softmax output layer
-        pass
+
+        # for each row, find the value of the y column.tolist.
+        # smax = scores[[0,1,2,3,4], [0,1,2,2,1]]
+        smax = scores[np.arange(scores.shape[0]).tolist(), y]
+        exp_loss = sum(-np.log(smax))/float(scores.shape[0])
+
+        #l2 loss
+        W1sq, W2sq =W1**2, W2**2
+        l2 =reg * (sum(sum(W1sq).tolist()) + sum(sum(W2sq).tolist()) )
+
+        loss = exp_loss + l2
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
