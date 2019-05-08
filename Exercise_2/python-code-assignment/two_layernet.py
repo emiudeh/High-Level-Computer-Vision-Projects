@@ -83,7 +83,8 @@ class TwoLayerNet(object):
         # of shape (N, C).                                                          #
         #############################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-        z2 = np.dot(X, W1) + b1
+        a1 = X
+        z2 = np.dot(a1, W1) + b1
 
         # perform Relu
         a2 = abs(z2) * (z2 > 0)
@@ -133,7 +134,13 @@ class TwoLayerNet(object):
         # grads['W1'] should store the gradient on W1, and be a matrix of same size #
         #############################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-        pass
+        grad_const = np.zeros(z3.shape)
+        grad_const[np.arange(y.size), y] = 1
+        grads["W2"] = (1/y.size) * np.dot(a2.T, (scores - grad_const)) + 2*reg*W2
+        grads["W1"] = (1/y.size) * np.dot(np.dot(a1.T, (scores - grad_const)), W2.T) + 2*reg*W1
+        grads["b1"] = (1/y.size) * np.dot((scores - grad_const), W2.T)
+        grads["b2"] = (1/y.size) * (scores - grad_const)
+
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
