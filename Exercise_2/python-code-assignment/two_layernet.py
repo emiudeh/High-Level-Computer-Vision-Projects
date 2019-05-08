@@ -175,6 +175,7 @@ class TwoLayerNet(object):
         train_acc_history = []
         val_acc_history = []
 
+
         for it in range(num_iters):
             X_batch = X
             y_batch = y
@@ -184,7 +185,10 @@ class TwoLayerNet(object):
             # them in X_batch and y_batch respectively.                             #
             #########################################################################
             # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-            pass
+            indices = np.arange(X_batch.shape[0])
+            np.random.shuffle(indices)
+            X_batch = X[indices[0:batch_size]]
+            y_batch = y[indices[0:batch_size]]
             # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
             # Compute loss and gradients using the current minibatch
@@ -198,8 +202,10 @@ class TwoLayerNet(object):
             # stored in the grads dictionary defined above.                         #
             #########################################################################
             # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-
-            pass
+            self.params['W1'] = grads['W1']
+            self.params['b1'] = grads['b1'] 
+            self.params['W2'] = grads['W2'] 
+            self.params['b2'] = grads['b2'] 
 
             # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
@@ -244,8 +250,8 @@ class TwoLayerNet(object):
         # TODO: Implement this function; it should be VERY simple!                #
         ###########################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-
-        pass
+        logits = loss(X,y=None)
+        y_pred = np.argmax(logits, axis=1)
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
