@@ -138,32 +138,23 @@ class TwoLayerNet(object):
         # grads['W1'] should store the gradient on W1, and be a matrix of same size #
         #############################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
+
+        # grad_const is placeholder for delta in eq.16
         grad_const = np.zeros(z3.shape)
         grad_const[np.arange(y.size), y] = 1
+        
+        # dj_dz3 is the derivative of J wrt z3
+        dj_dz3 = (1/y.size) * (scores - grad_const)
+        
+        # da2 hold the derivative of a2 wrt z2
+        da2 = np.copy(z2)
+        da2[da2  > 0] = 1
+        da2[da2  < 0] = 0
 
-        # grads["W1"] = (1/y.size) * np.dot(np.dot(a1.T, (scores - grad_const)), W2.T) + 2*reg*W1
-
-        # placeholder for the dotproduct and does the relu
-        dreluW1 = np.dot((scores - grad_const),  W2.T)
-
-        #use a2_back to hold the forward prop value of a2
-        a2_back = a2 * 1
-        a2_back[a2_back > 0] = 1
-        a2_back[a2_back < 0] = 0
-
-        grads["W1"] = (1/y.size) * np.dot(a1.T, a2_back * dreluW1) + 2*reg*W1
-
-
-        # grads["W1"] = (1/y.size) * np.dot(a1.T, dreluW1) + 2*reg*W1
-        # a1 = np.select([a1 <= 0, a1 > 0], [0,1])
-        # # print(a1)
-        # grads["W1"] = (1/y.size) * np.dot(np.dot((scores - grad_const),  W2.T).T, a1).T + 2*reg*W1
-
-        # print("HEEERE: ", a1.shape, (scores - grad_const).shape,  W2.shape, z2.shape, W1.shape )
-        grads["W2"] = (1/y.size) * np.dot(a2.T, (scores - grad_const)) + 2*reg*W2
-        grads["b1"] = ((1/y.size) * a2_back * np.dot((scores - grad_const), W2.T)).sum(axis=0)
-        grads["b2"] = ((1/y.size) * (scores - grad_const)).sum(axis=0)
-
+        grads["W1"] = np.dot((np.dot(dj_dz3, W2.T) * da2).T, a1).T + 2*reg*W1
+        grads["W2"] = np.dot(a2.T, dj_dz3) + 2*reg*W2 
+        grads["b1"] = (np.dot(dj_dz3, W2.T) * da2).sum(axis=0)
+        grads["b2"] = dj_dz3.sum(axis=0)
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
