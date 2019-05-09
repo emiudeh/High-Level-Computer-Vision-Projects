@@ -90,10 +90,13 @@ class TwoLayerNet(object):
         a2 = abs(z2) * (z2 > 0)
 
         z3 = np.dot(a2, W2) + b2
-
+        stable_z3 = z3.T - np.amax(z3.T, axis=0)
+        stable_z3 = stable_z3.T
         # compute softmax
-        a3 = np.exp(z3).T
+        a3 = np.exp(stable_z3).T
         scores = (a3/a3.sum(axis=0)).T
+
+
 
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
@@ -116,6 +119,7 @@ class TwoLayerNet(object):
         # for each row, find the value of the y column.tolist.
         # smax = scores[[0,1,2,3,4], [0,1,2,2,1]]
         smax = scores[np.arange(scores.shape[0]).tolist(), y]
+        # print("DEEEEEELETE!!!!!!", scores.shape[0])
         exp_loss = sum(-np.log(smax))/float(scores.shape[0])
 
         #l2 loss
@@ -136,10 +140,12 @@ class TwoLayerNet(object):
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         grad_const = np.zeros(z3.shape)
         grad_const[np.arange(y.size), y] = 1
-        grads["W2"] = (1/y.size) * np.dot(a2.T, (scores - grad_const)) + 2*reg*W2
         grads["W1"] = (1/y.size) * np.dot(np.dot(a1.T, (scores - grad_const)), W2.T) + 2*reg*W1
-        grads["b1"] = (1/y.size) * np.dot((scores - grad_const), W2.T)
-        grads["b2"] = (1/y.size) * (scores - grad_const)
+        dz2 = np.select([z2 <= 0, z2 > 0], [0,1])
+        # print("HEEERE: ", a1.shape, (scores - grad_const).shape,  W2.shape, z2.shape, W1.shape )
+        grads["W2"] = (1/y.size) * np.dot(a2.T, (scores - grad_const)) + 2*reg*W2
+        grads["b1"] = ((1/y.size) * np.dot((scores - grad_const), W2.T)).mean(axis=0) 
+        grads["b2"] = ((1/y.size) * (scores - grad_const)).mean(axis=0)
 
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
@@ -250,7 +256,7 @@ class TwoLayerNet(object):
         # TODO: Implement this function; it should be VERY simple!                #
         ###########################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-        logits = loss(X,y=None)
+        logits = self.loss(X,y=None)
         y_pred = np.argmax(logits, axis=1)
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
