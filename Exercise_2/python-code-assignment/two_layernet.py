@@ -140,12 +140,29 @@ class TwoLayerNet(object):
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         grad_const = np.zeros(z3.shape)
         grad_const[np.arange(y.size), y] = 1
-        grads["W1"] = (1/y.size) * np.dot(np.dot(a1.T, (scores - grad_const)), W2.T) + 2*reg*W1
-        dz2 = np.select([z2 <= 0, z2 > 0], [0,1])
+
+        # grads["W1"] = (1/y.size) * np.dot(np.dot(a1.T, (scores - grad_const)), W2.T) + 2*reg*W1
+
+        # placeholder for the dotproduct and does the relu
+        dreluW1 = np.dot((scores - grad_const),  W2.T)
+
+        #use a2_back to hold the forward prop value of a2
+        a2_back = a2 * 1
+        a2_back[a2_back > 0] = 1
+        a2_back[a2_back < 0] = 0
+
+        grads["W1"] = (1/y.size) * np.dot(a1.T, a2_back * dreluW1) + 2*reg*W1
+
+
+        # grads["W1"] = (1/y.size) * np.dot(a1.T, dreluW1) + 2*reg*W1
+        # a1 = np.select([a1 <= 0, a1 > 0], [0,1])
+        # # print(a1)
+        # grads["W1"] = (1/y.size) * np.dot(np.dot((scores - grad_const),  W2.T).T, a1).T + 2*reg*W1
+
         # print("HEEERE: ", a1.shape, (scores - grad_const).shape,  W2.shape, z2.shape, W1.shape )
         grads["W2"] = (1/y.size) * np.dot(a2.T, (scores - grad_const)) + 2*reg*W2
-        grads["b1"] = ((1/y.size) * np.dot((scores - grad_const), W2.T)).mean(axis=0) 
-        grads["b2"] = ((1/y.size) * (scores - grad_const)).mean(axis=0)
+        grads["b1"] = ((1/y.size) * a2_back * np.dot((scores - grad_const), W2.T)).sum(axis=0)
+        grads["b2"] = ((1/y.size) * (scores - grad_const)).sum(axis=0)
 
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
@@ -208,10 +225,10 @@ class TwoLayerNet(object):
             # stored in the grads dictionary defined above.                         #
             #########################################################################
             # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-            self.params['W1'] = grads['W1']
-            self.params['b1'] = grads['b1'] 
-            self.params['W2'] = grads['W2'] 
-            self.params['b2'] = grads['b2'] 
+            self.params['W1'] -= learning_rate * grads['W1']
+            self.params['b1'] -= learning_rate * grads['b1']
+            self.params['W2'] -= learning_rate * grads['W2']
+            self.params['b2'] -= learning_rate * grads['b2']
 
             # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
