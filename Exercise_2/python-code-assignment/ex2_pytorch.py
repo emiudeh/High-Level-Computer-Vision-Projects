@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-import torchvision
+import torchvision 
 import torchvision.transforms as transforms
 import sys
 
@@ -23,7 +23,7 @@ print('Using device: %s'%device)
 # Hyper-parameters
 #--------------------------------
 input_size = 32 * 32 * 3
-hidden_size = [50]
+hidden_size = []
 num_classes = 10
 num_epochs = 10
 batch_size = 200
@@ -32,7 +32,22 @@ learning_rate_decay = 0.95
 reg=0.001
 num_training= 49000
 num_validation =1000
-train = True
+train = False
+num_hidden_layers =2
+#--------------------------------
+# Q 4 a) parameters from two layer net as in q3 
+#--------------------------------
+#num_epochs = 10
+#batch_size = 200
+#learning_rate = 1e-4
+#learning_rate_decay = 0.95
+#reg=0.25
+
+
+
+
+
+
 
 #-------------------------------------------------
 # Load the CIFAR-10 dataset
@@ -107,10 +122,26 @@ class MultiLayerPerceptron(nn.Module):
         #################################################################################
         layers = []
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-        layers.append(nn.Linear(input_size,hidden_size[0],bias=True))
-        layers.append(nn.ReLU())
-        layers.append(nn.Linear(hidden_size[0],num_classes))
-
+        # Network configuration for question 4 a)
+        if(sys.argv[-1]== "MLP_base"):
+            global  learning_rate
+            learning_rate = 0.0001
+            global learning_rate_decay
+            learning_rate_decay = 0.95
+            global reg
+            reg = 0.25
+            global num_epochs
+            num_epochs = 5
+            layers.append(nn.Linear(input_size,hidden_size[0],bias=True))
+            layers.append(nn.ReLU())
+            layers.append(nn.Linear(hidden_size[0],num_classes))
+        else:
+            layers.append(nn.Linear(input_size,hidden_size[0],bias=True))
+            layers.append(nn.ReLU())
+            for x in range(0,len(hidden_size)-1):
+                layers.append(nn.Linear(hidden_size[x],hidden_size[x+1],bias=True))
+                layers.append(nn.ReLU())
+            layers.append(nn.Linear(hidden_size[-1],num_classes))
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         self.layers = nn.Sequential(*layers)
 
@@ -124,14 +155,38 @@ class MultiLayerPerceptron(nn.Module):
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         # x : batch of images
         x = x.view(-1,input_size)  # flatten the multidimension images
-        x = self.layers[0](x)
-        x = self.layers[1](x)
-        out = self.layers[-1](x)
+
+        for layer in range(0,len(self.layers)):
+            x = self.layers[layer](x)
+        out = x 
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         return out
 
-model = MultiLayerPerceptron(input_size, hidden_size, num_classes).to(device)
+
+
+'''
+input_size = 32 * 32 * 3
+hidden_size = [50,50,50]
+num_classes = 10
+num_epochs = 10
+batch_size = 200
+learning_rate = 1e-2
+learning_rate_decay = 0.95
+reg=0.001
+num_training= 49000
+num_validation =1000
+train = True
+
+
+'''
+
+for layer in range(0,num_hidden_layers):
+    print("Number of Layers ",layer+2)
+    hidden_size.append(50)
+    model = MultiLayerPerceptron(input_size, hidden_size, num_classes).to(device)
+
+
 if train:
     model.apply(weights_init)
 
@@ -161,17 +216,19 @@ if train:
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-
-
-
-
+            correct_batch= 0
+            total_batch = 0
+            _,predicted = torch.max(prediction,1)
+            total_batch += labels.size(0)
+            correct_batch += (predicted == labels).sum().item()
 
             # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
             if (i+1) % 100 == 0:
-                print ('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}'
-                       .format(epoch+1, num_epochs, i+1, total_step, loss.item()))
-
+                #print ('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}'
+                #       .format(epoch+1, num_epochs, i+1, total_step, loss.item()))
+                t=3
+                #print('Batch accuracy is: {} %'.format(100 * correct_batch / total_batch))
         # Code to update the lr
         lr *= learning_rate_decay
         update_lr(optimizer, lr)
@@ -181,7 +238,6 @@ if train:
             for images, labels in val_loader:
                 images = images.to(device)
                 labels = labels.to(device)
-                import pdb
                 ####################################################
                 # TODO: Implement the evaluation code              #
                 # 1. Pass the images to the model                  #
@@ -218,8 +274,8 @@ else:
     # Run the test code once you have your by setting train flag to false
     # and loading the best model
 
-    best_model = None # torch.load()
-    mode.load_state_dict(best_model)
+    best_model = torch.load('model.ckpt')
+    model.load_state_dict(best_model)
     # Test the model
     # In test phase, we don't need to compute gradients (for memory efficiency)
     with torch.no_grad():
@@ -234,8 +290,8 @@ else:
             # 2. Get the most confident predicted class        #
             ####################################################
             # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-
-
+            model_output = model(images)
+            _,predicted = torch.max(model_output,1)
 
             # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
             total += labels.size(0)
