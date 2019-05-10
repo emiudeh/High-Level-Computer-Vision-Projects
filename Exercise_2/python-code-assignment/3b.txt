@@ -1,0 +1,317 @@
+Your scores:
+[[0.3644621  0.22911264 0.40642526]
+ [0.47590629 0.17217039 0.35192332]
+ [0.43035767 0.26164229 0.30800004]
+ [0.41583127 0.2983228  0.28584593]
+ [0.36328815 0.32279939 0.31391246]]
+
+correct scores:
+[[0.3644621  0.22911264 0.40642526]
+ [0.47590629 0.17217039 0.35192332]
+ [0.43035767 0.26164229 0.30800004]
+ [0.41583127 0.2983228  0.28584593]
+ [0.36328815 0.32279939 0.31391246]]
+
+Difference between your scores and correct scores:
+2.9173411603133914e-08
+Difference between your loss and correct loss:
+1.794120407794253e-13
+b1 max relative error: 2.738421e-09
+W1 max relative error: 3.561318e-09
+W2 max relative error: 3.440708e-09
+b2 max relative error: 4.447646e-11
+Final training loss:  0.01563498761185679
+Train data shape:  (49000, 3072)
+Train labels shape:  (49000,)
+Validation data shape:  (1000, 3072)
+Validation labels shape:  (1000,)
+Test data shape:  (1000, 3072)
+Test labels shape:  (1000,)
+iteration 0 / 1000: loss 2.302862
+iteration 100 / 1000: loss 63296011441834856793646293375826952526907156105576685775468099784771656640773488640.000000
+iteration 200 / 1000: loss 6609072876030468665767759400770041939644646999719356406020188688818347540787139348732531984191795461336388356670094076868870102614600731218055497827138402385075764282460930605842432.000000
+iteration 300 / 1000: loss 199055054698460792225623006952975259346209895448546992985342816932907179711505608670141374634139015912320380651202086654252327376760792073214799581909697192058196432399096041327878949103488980846474375556196101688364456404240727557849860298006065565474834899066582488260993351680.000000
+iteration 400 / 1000: loss nan
+iteration 500 / 1000: loss nan
+iteration 600 / 1000: loss nan
+iteration 700 / 1000: loss nan
+iteration 800 / 1000: loss nan
+iteration 900 / 1000: loss nan
+Validation accuracy:  0.087
+Hidden Units 10  learning rate  0.0001 iteration  1000 regularizer 0.1
+Validation accuracy:  0.266
+Hidden Units 10  learning rate  0.0001 iteration  1000 regularizer 0.01
+Validation accuracy:  0.257
+Hidden Units 10  learning rate  0.0001 iteration  1000 regularizer 0.001
+Validation accuracy:  0.263
+Hidden Units 10  learning rate  0.0001 iteration  1000 regularizer 0.0001
+Validation accuracy:  0.263
+Hidden Units 10  learning rate  0.0001 iteration  2000 regularizer 0.1
+Validation accuracy:  0.325
+Hidden Units 10  learning rate  0.0001 iteration  2000 regularizer 0.01
+Validation accuracy:  0.333
+Hidden Units 10  learning rate  0.0001 iteration  2000 regularizer 0.001
+Validation accuracy:  0.333
+Hidden Units 10  learning rate  0.0001 iteration  2000 regularizer 0.0001
+Validation accuracy:  0.323
+Hidden Units 10  learning rate  0.0001 iteration  5000 regularizer 0.1
+Validation accuracy:  0.382
+Hidden Units 10  learning rate  0.0001 iteration  5000 regularizer 0.01
+Validation accuracy:  0.39
+Hidden Units 10  learning rate  0.0001 iteration  5000 regularizer 0.001
+Validation accuracy:  0.385
+Hidden Units 10  learning rate  0.0001 iteration  5000 regularizer 0.0001
+Validation accuracy:  0.389
+Hidden Units 10  learning rate  0.0001 iteration  10000 regularizer 0.1
+Validation accuracy:  0.408
+Hidden Units 10  learning rate  0.0001 iteration  10000 regularizer 0.01
+Validation accuracy:  0.406
+Hidden Units 10  learning rate  0.0001 iteration  10000 regularizer 0.001
+Validation accuracy:  0.39
+Hidden Units 10  learning rate  0.0001 iteration  10000 regularizer 0.0001
+Validation accuracy:  0.395
+Hidden Units 10  learning rate  0.001 iteration  1000 regularizer 0.1
+Validation accuracy:  0.394
+Hidden Units 10  learning rate  0.001 iteration  1000 regularizer 0.01
+Validation accuracy:  0.4
+Hidden Units 10  learning rate  0.001 iteration  1000 regularizer 0.001
+Validation accuracy:  0.397
+Hidden Units 10  learning rate  0.001 iteration  1000 regularizer 0.0001
+Validation accuracy:  0.405
+Hidden Units 10  learning rate  0.001 iteration  2000 regularizer 0.1
+Validation accuracy:  0.409
+Hidden Units 10  learning rate  0.001 iteration  2000 regularizer 0.01
+Validation accuracy:  0.43
+Hidden Units 10  learning rate  0.001 iteration  2000 regularizer 0.001
+Validation accuracy:  0.427
+Hidden Units 10  learning rate  0.001 iteration  2000 regularizer 0.0001
+Validation accuracy:  0.414
+Hidden Units 10  learning rate  0.001 iteration  5000 regularizer 0.1
+Validation accuracy:  0.414
+Hidden Units 10  learning rate  0.001 iteration  5000 regularizer 0.01
+Validation accuracy:  0.436
+Hidden Units 10  learning rate  0.001 iteration  5000 regularizer 0.001
+Validation accuracy:  0.42
+Hidden Units 10  learning rate  0.001 iteration  5000 regularizer 0.0001
+Validation accuracy:  0.431
+Hidden Units 10  learning rate  0.001 iteration  10000 regularizer 0.1
+Validation accuracy:  0.418
+Hidden Units 10  learning rate  0.001 iteration  10000 regularizer 0.01
+Validation accuracy:  0.449
+Hidden Units 10  learning rate  0.001 iteration  10000 regularizer 0.001
+Validation accuracy:  0.427
+Hidden Units 10  learning rate  0.001 iteration  10000 regularizer 0.0001
+Validation accuracy:  0.425
+Hidden Units 30  learning rate  0.0001 iteration  1000 regularizer 0.1
+Validation accuracy:  0.276
+Hidden Units 30  learning rate  0.0001 iteration  1000 regularizer 0.01
+Validation accuracy:  0.275
+Hidden Units 30  learning rate  0.0001 iteration  1000 regularizer 0.001
+Validation accuracy:  0.289
+Hidden Units 30  learning rate  0.0001 iteration  1000 regularizer 0.0001
+Validation accuracy:  0.275
+Hidden Units 30  learning rate  0.0001 iteration  2000 regularizer 0.1
+Validation accuracy:  0.36
+Hidden Units 30  learning rate  0.0001 iteration  2000 regularizer 0.01
+Validation accuracy:  0.359
+Hidden Units 30  learning rate  0.0001 iteration  2000 regularizer 0.001
+Validation accuracy:  0.356
+Hidden Units 30  learning rate  0.0001 iteration  2000 regularizer 0.0001
+Validation accuracy:  0.352
+Hidden Units 30  learning rate  0.0001 iteration  5000 regularizer 0.1
+Validation accuracy:  0.425
+Hidden Units 30  learning rate  0.0001 iteration  5000 regularizer 0.01
+Validation accuracy:  0.412
+Hidden Units 30  learning rate  0.0001 iteration  5000 regularizer 0.001
+Validation accuracy:  0.419
+Hidden Units 30  learning rate  0.0001 iteration  5000 regularizer 0.0001
+Validation accuracy:  0.414
+Hidden Units 30  learning rate  0.0001 iteration  10000 regularizer 0.1
+Validation accuracy:  0.456
+Hidden Units 30  learning rate  0.0001 iteration  10000 regularizer 0.01
+Validation accuracy:  0.443
+Hidden Units 30  learning rate  0.0001 iteration  10000 regularizer 0.001
+Validation accuracy:  0.451
+Hidden Units 30  learning rate  0.0001 iteration  10000 regularizer 0.0001
+Validation accuracy:  0.438
+Hidden Units 30  learning rate  0.001 iteration  1000 regularizer 0.1
+Validation accuracy:  0.469
+Hidden Units 30  learning rate  0.001 iteration  1000 regularizer 0.01
+Validation accuracy:  0.486
+Hidden Units 30  learning rate  0.001 iteration  1000 regularizer 0.001
+Validation accuracy:  0.457
+Hidden Units 30  learning rate  0.001 iteration  1000 regularizer 0.0001
+Validation accuracy:  0.465
+Hidden Units 30  learning rate  0.001 iteration  2000 regularizer 0.1
+Validation accuracy:  0.486
+Hidden Units 30  learning rate  0.001 iteration  2000 regularizer 0.01
+Validation accuracy:  0.466
+Hidden Units 30  learning rate  0.001 iteration  2000 regularizer 0.001
+Validation accuracy:  0.475
+Hidden Units 30  learning rate  0.001 iteration  2000 regularizer 0.0001
+Validation accuracy:  0.476
+Hidden Units 30  learning rate  0.001 iteration  5000 regularizer 0.1
+Validation accuracy:  0.506
+Hidden Units 30  learning rate  0.001 iteration  5000 regularizer 0.01
+Validation accuracy:  0.476
+Hidden Units 30  learning rate  0.001 iteration  5000 regularizer 0.001
+Validation accuracy:  0.492
+Hidden Units 30  learning rate  0.001 iteration  5000 regularizer 0.0001
+Validation accuracy:  0.494
+Hidden Units 30  learning rate  0.001 iteration  10000 regularizer 0.1
+Validation accuracy:  0.509
+Hidden Units 30  learning rate  0.001 iteration  10000 regularizer 0.01
+Validation accuracy:  0.494
+Hidden Units 30  learning rate  0.001 iteration  10000 regularizer 0.001
+Validation accuracy:  0.503
+Hidden Units 30  learning rate  0.001 iteration  10000 regularizer 0.0001
+Validation accuracy:  0.499
+Hidden Units 50  learning rate  0.0001 iteration  1000 regularizer 0.1
+Validation accuracy:  0.279
+Hidden Units 50  learning rate  0.0001 iteration  1000 regularizer 0.01
+Validation accuracy:  0.282
+Hidden Units 50  learning rate  0.0001 iteration  1000 regularizer 0.001
+Validation accuracy:  0.292
+Hidden Units 50  learning rate  0.0001 iteration  1000 regularizer 0.0001
+Validation accuracy:  0.287
+Hidden Units 50  learning rate  0.0001 iteration  2000 regularizer 0.1
+Validation accuracy:  0.365
+Hidden Units 50  learning rate  0.0001 iteration  2000 regularizer 0.01
+Validation accuracy:  0.36
+Hidden Units 50  learning rate  0.0001 iteration  2000 regularizer 0.001
+Validation accuracy:  0.368
+Hidden Units 50  learning rate  0.0001 iteration  2000 regularizer 0.0001
+Validation accuracy:  0.363
+Hidden Units 50  learning rate  0.0001 iteration  5000 regularizer 0.1
+Validation accuracy:  0.429
+Hidden Units 50  learning rate  0.0001 iteration  5000 regularizer 0.01
+Validation accuracy:  0.426
+Hidden Units 50  learning rate  0.0001 iteration  5000 regularizer 0.001
+Validation accuracy:  0.429
+Hidden Units 50  learning rate  0.0001 iteration  5000 regularizer 0.0001
+Validation accuracy:  0.423
+Hidden Units 50  learning rate  0.0001 iteration  10000 regularizer 0.1
+Validation accuracy:  0.459
+Hidden Units 50  learning rate  0.0001 iteration  10000 regularizer 0.01
+Validation accuracy:  0.448
+Hidden Units 50  learning rate  0.0001 iteration  10000 regularizer 0.001
+Your scores:
+[[0.3644621  0.22911264 0.40642526]
+ [0.47590629 0.17217039 0.35192332]
+ [0.43035767 0.26164229 0.30800004]
+ [0.41583127 0.2983228  0.28584593]
+ [0.36328815 0.32279939 0.31391246]]
+
+correct scores:
+[[0.3644621  0.22911264 0.40642526]
+ [0.47590629 0.17217039 0.35192332]
+ [0.43035767 0.26164229 0.30800004]
+ [0.41583127 0.2983228  0.28584593]
+ [0.36328815 0.32279939 0.31391246]]
+
+Difference between your scores and correct scores:
+2.9173411603133914e-08
+Difference between your loss and correct loss:
+1.794120407794253e-13
+b1 max relative error: 2.738421e-09
+b2 max relative error: 4.447646e-11
+W1 max relative error: 3.561318e-09
+W2 max relative error: 3.440708e-09
+Final training loss:  0.01563498761185679
+Train data shape:  (49000, 3072)
+Train labels shape:  (49000,)
+Validation data shape:  (1000, 3072)
+Validation labels shape:  (1000,)
+Test data shape:  (1000, 3072)
+Test labels shape:  (1000,)
+iteration 0 / 1000: loss 2.302862
+iteration 100 / 1000: loss 63296011441834856793646293375826952526907156105576685775468099784771656640773488640.000000
+iteration 200 / 1000: loss 6609072876030468665767759400770041939644646999719356406020188688818347540787139348732531984191795461336388356670094076868870102614600731218055497827138402385075764282460930605842432.000000
+iteration 300 / 1000: loss 199055054698460792225623006952975259346209895448546992985342816932907179711505608670141374634139015912320380651202086654252327376760792073214799581909697192058196432399096041327878949103488980846474375556196101688364456404240727557849860298006065565474834899066582488260993351680.000000
+iteration 400 / 1000: loss nan
+iteration 500 / 1000: loss nan
+iteration 600 / 1000: loss nan
+iteration 700 / 1000: loss nan
+iteration 800 / 1000: loss nan
+iteration 900 / 1000: loss nan
+Validation accuracy:  0.087
+Hidden Units 50  learning rate  0.0001 iteration  1000 regularizer 0.1
+Validation accuracy:  0.285
+Hidden Units 50  learning rate  0.0001 iteration  1000 regularizer 0.01
+Validation accuracy:  0.282
+Hidden Units 50  learning rate  0.0001 iteration  1000 regularizer 0.001
+Validation accuracy:  0.296
+Hidden Units 50  learning rate  0.0001 iteration  1000 regularizer 0.0001
+Validation accuracy:  0.282
+Hidden Units 50  learning rate  0.0001 iteration  2000 regularizer 0.1
+Validation accuracy:  0.36
+Hidden Units 50  learning rate  0.0001 iteration  2000 regularizer 0.01
+Validation accuracy:  0.358
+Hidden Units 50  learning rate  0.0001 iteration  2000 regularizer 0.001
+Validation accuracy:  0.364
+Hidden Units 50  learning rate  0.0001 iteration  2000 regularizer 0.0001
+Validation accuracy:  0.36
+Hidden Units 50  learning rate  0.0001 iteration  5000 regularizer 0.1
+Validation accuracy:  0.422
+Hidden Units 50  learning rate  0.0001 iteration  5000 regularizer 0.01
+Your scores:
+[[0.3644621  0.22911264 0.40642526]
+ [0.47590629 0.17217039 0.35192332]
+ [0.43035767 0.26164229 0.30800004]
+ [0.41583127 0.2983228  0.28584593]
+ [0.36328815 0.32279939 0.31391246]]
+
+correct scores:
+[[0.3644621  0.22911264 0.40642526]
+ [0.47590629 0.17217039 0.35192332]
+ [0.43035767 0.26164229 0.30800004]
+ [0.41583127 0.2983228  0.28584593]
+ [0.36328815 0.32279939 0.31391246]]
+
+Difference between your scores and correct scores:
+2.9173411603133914e-08
+Difference between your loss and correct loss:
+1.794120407794253e-13
+b1 max relative error: 2.738421e-09
+W1 max relative error: 3.561318e-09
+W2 max relative error: 3.440708e-09
+b2 max relative error: 4.447646e-11
+Final training loss:  0.01563498761185679
+Train data shape:  (49000, 3072)
+Train labels shape:  (49000,)
+Validation data shape:  (1000, 3072)
+Validation labels shape:  (1000,)
+Test data shape:  (1000, 3072)
+Test labels shape:  (1000,)
+iteration 0 / 1000: loss 2.302862
+iteration 100 / 1000: loss 63296011441834856793646293375826952526907156105576685775468099784771656640773488640.000000
+iteration 200 / 1000: loss 6609072876030468665767759400770041939644646999719356406020188688818347540787139348732531984191795461336388356670094076868870102614600731218055497827138402385075764282460930605842432.000000
+iteration 300 / 1000: loss 199055054698460792225623006952975259346209895448546992985342816932907179711505608670141374634139015912320380651202086654252327376760792073214799581909697192058196432399096041327878949103488980846474375556196101688364456404240727557849860298006065565474834899066582488260993351680.000000
+iteration 400 / 1000: loss nan
+iteration 500 / 1000: loss nan
+iteration 600 / 1000: loss nan
+iteration 700 / 1000: loss nan
+iteration 800 / 1000: loss nan
+iteration 900 / 1000: loss nan
+Validation accuracy:  0.087
+Hidden Units 80  learning rate  0.0001 iteration  1000 regularizer 0.1
+Validation accuracy:  0.286
+Hidden Units 80  learning rate  0.0001 iteration  1000 regularizer 0.01
+Validation accuracy:  0.291
+Hidden Units 80  learning rate  0.0001 iteration  1000 regularizer 0.001
+Validation accuracy:  0.287
+Hidden Units 80  learning rate  0.0001 iteration  1000 regularizer 0.0001
+Validation accuracy:  0.285
+Hidden Units 80  learning rate  0.0001 iteration  2000 regularizer 0.1
+Validation accuracy:  0.361
+Hidden Units 80  learning rate  0.0001 iteration  2000 regularizer 0.01
+Validation accuracy:  0.367
+Hidden Units 80  learning rate  0.0001 iteration  2000 regularizer 0.001
+Validation accuracy:  0.367
+Hidden Units 80  learning rate  0.0001 iteration  2000 regularizer 0.0001
+Validation accuracy:  0.373
+Hidden Units 80  learning rate  0.0001 iteration  5000 regularizer 0.1
+Validation accuracy:  0.433
+Hidden Units 80  learning rate  0.0001 iteration  5000 regularizer 0.01
+Validation accuracy:  0.427
+Hidden Units 80  learning rate  0.0001 iteration  5000 regularizer 0.001
