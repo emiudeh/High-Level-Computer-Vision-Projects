@@ -1,0 +1,14 @@
+Using device: cpu
+Number of Layers  2
+Validataion accuracy is: 50.4 %
+Number of Layers  3
+Validataion accuracy is: 51.7 %
+Number of Layers  4
+Validataion accuracy is: 7.8 %
+Number of Layers  5
+Validataion accuracy is: 7.9 %
+Using device: cpu
+Number of Layers  2
+Validataion accuracy is: 45.1 %
+Validataion accuracy is: 47.4 %
+Validataion accuracy is: 48.9 %
