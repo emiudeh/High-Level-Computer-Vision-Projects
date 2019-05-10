@@ -180,8 +180,8 @@ net = TwoLayerNet(input_size, hidden_size, num_classes)
 # Train the network
 stats = net.train(X_train, y_train, X_val, y_val,
             num_iters=1000, batch_size=200,
-            learning_rate=1e-4, learning_rate_decay=0.95,
-            reg=0.25, verbose=True)
+            learning_rate=0.01, learning_rate_decay=0.95,
+            reg=0.2, verbose=True)
 
 # Predict on the validation set
 val_acc = (net.predict(X_val) == y_val).mean()
@@ -218,7 +218,6 @@ plt.show()
 
 
 # Visualize the weights of the network
-
 show_net_weights(net)
 
 # # Tune your hyperparameters
@@ -249,8 +248,13 @@ show_net_weights(net)
 # dimensionality, or adding dropout, or adding features to the solver, etc.).
 
 # **Explain your hyperparameter tuning process in the report.**
+best_net = TwoLayerNet(input_size, 30, num_classes)
+stats = best_net.train(X_train, y_train, X_val, y_val,
+            num_iters=10000, batch_size=200,
+            learning_rate=0.001, learning_rate_decay=0.95,
+            reg=0.1, verbose=True)
 
-best_net = None # store the best model into this
+
 
 #################################################################################
 # TODO: Tune hyperparameters using the validation set. Store your best trained  #
@@ -264,8 +268,33 @@ best_net = None # store the best model into this
 # write code to sweep through possible combinations of hyperparameters          #
 #################################################################################
 # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
+'''
+hidden_layer_sizes = [80,100]
+learning_rates = [0.0001,0.001]
+training_iteration = [1000,2000,5000]
+regularization_strength = [0.1,0.01,0.001,0.0001]
+for hidden_unit in hidden_layer_sizes:
+    for lr in learning_rates:
+        for iteration in training_iteration:
+            for penality in regularization_strength:
+                print("Hidden Units",hidden_unit," learning rate ",lr,"iteration ",iteration,"regularizer",penality)
+                net = TwoLayerNet(input_size, hidden_unit, num_classes)
+                # Train the network
+                stats = net.train(X_train, y_train, X_val, y_val,
+                            num_iters=iteration, batch_size=200,
+                            learning_rate=lr, learning_rate_decay=0.95,reg=penality, verbose=False)
 
-pass
+                # Predict on the validation set
+                val_acc = (net.predict(X_val) == y_val).mean()
+                print('Validation accuracy: ', val_acc)
+
+#stats = net.train(X_train, y_train, X_val, y_val,
+            ##num_iters=1000, batch_size=200,
+            #learning_rate=0.01, learning_rate_decay=0.95,
+            #reg=0.2, verbose=True)
+
+'''
+
 # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
 # visualize the weights of the best network
