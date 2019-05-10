@@ -85,13 +85,18 @@ class TwoLayerNet(object):
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         a1 = X
         z2 = np.dot(a1, W1) + b1
-
+    
         # perform Relu
-        a2 = abs(z2) * (z2 > 0)
-
+        a2 = np.maximum(0,z2);
+        #a2 = abs(z2) * (z2 > 0)
+        def stablesoftmax(x):
+            shiftx = x - np.max(x)
+            exps = np.exp(shiftx)
+            return exps / np.sum(exps)
         z3 = np.dot(a2, W2) + b2
-        stable_z3 = z3.T - np.amax(z3.T, axis=0)
+        stable_z3 = z3.T - np.max(z3.T, axis=0)
         stable_z3 = stable_z3.T
+        #stable_z3 = stablesoftmax(z3.T)
         # compute softmax
         a3 = np.exp(stable_z3).T
         scores = (a3/a3.sum(axis=0)).T
@@ -118,15 +123,30 @@ class TwoLayerNet(object):
 
         # for each row, find the value of the y column.tolist.
         # smax = scores[[0,1,2,3,4], [0,1,2,2,1]]
-        smax = scores[np.arange(scores.shape[0]).tolist(), y]
-        # print("DEEEEEELETE!!!!!!", scores.shape[0])
-        exp_loss = sum(-np.log(smax))/float(scores.shape[0])
+        # label [0,4,5]
 
-        #l2 loss
-        W1sq, W2sq =W1**2, W2**2
-        l2 =reg * (sum(sum(W1sq).tolist()) + sum(sum(W2sq).tolist()) )
+        prob = z3[np.arange(N), y]
 
-        loss = exp_loss + l2
+        # implement the logsum trick for computational stability
+        # -(xi - b - sum(log (exp(xj - b))
+        # where b is the maximum value per row / per target preduction
+
+        b = np.max(z3, axis=1)
+        xj_b = np.exp(stable_z3)
+        exp_sum = np.sum(xj_b, axis=1)
+        log_sum = np.log(exp_sum)
+
+        cross_ent = sum(-prob + b + log_sum)/float(N)
+
+
+
+        #exp_loss = sum(-np.log(sprob)) / float(scores.shape[0])
+
+        # l2 loss
+        W1sq, W2sq = W1 ** 2, W2 ** 2
+        l2 = reg * (sum(sum(W1sq).tolist()) + sum(sum(W2sq).tolist()))
+
+        loss = cross_ent + l2
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
