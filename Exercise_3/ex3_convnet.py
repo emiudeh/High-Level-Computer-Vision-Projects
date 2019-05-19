@@ -104,7 +104,11 @@ class ConvNet(nn.Module):
         #################################################################################
         layers = []
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-
+        self.conv1 = nn.Conv2d(in_channels=3, out_channels=128, kernel_size=3, stride=1, padding=1)
+        self.conv2 = nn.Conv2d(in_channels=128, out_channels=512, kernel_size=3, stride=1, padding=1)
+        self.conv3 = nn.Conv2d(in_channels=512, out_channels=512, kernel_size=3, stride=1, padding=1)
+        self.pool = nn.MaxPool2d(kernel_size=2, stride=2, padding=0)
+        self.fc = torch.nn.Linear(512, 10)
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
@@ -113,7 +117,18 @@ class ConvNet(nn.Module):
         # TODO: Implement the forward pass computations                                 #
         #################################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-
+        
+        # layer 1: in_channels=3, out_channels=128
+        x = nn.functional.relu(self.pool(self.conv1(x)))
+        # layer 2: in_channels=128, out_channels=512
+        x = nn.functional.relu(self.pool(self.conv2(x)))
+        # layer 3-5: in_channels=512, out_channels=512
+        x = nn.functional.relu(self.pool(self.conv3(x)))
+        x = nn.functional.relu(self.pool(self.conv3(x)))
+        x = nn.functional.relu(self.pool(self.conv3(x)))
+        # fully connected
+        x = x.view(-1, 512)
+        out = self.fc(x)
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         return out
@@ -130,7 +145,7 @@ def PrintModelSize(model, disp=True):
     # training                                                                      #
     #################################################################################
     # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-
+    model_sz = sum(p.numel() for p in model.parameters() if p.requires_grad)
 
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
     return model_sz
@@ -146,7 +161,7 @@ def VisualizeFilter(model):
     # You can use matlplotlib.imshow to visualize an image in python                #
     #################################################################################
     # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-
+    pass
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
 #======================================================================================
@@ -162,15 +177,15 @@ model.apply(weights_init)
 # Print the model
 print(model)
 # Print model size
-#======================================================================================
-# Q1.b: Implementing the function to count the number of trainable parameters in the model
-#======================================================================================
+# #======================================================================================
+# # Q1.b: Implementing the function to count the number of trainable parameters in the model
+# #======================================================================================
 PrintModelSize(model)
-#======================================================================================
-# Q1.a: Implementing the function to visualize the filters in the first conv layers.
-# Visualize the filters before training
-#======================================================================================
-VisualizeFilter(model)
+# #======================================================================================
+# # Q1.a: Implementing the function to visualize the filters in the first conv layers.
+# # Visualize the filters before training
+# #======================================================================================
+# VisualizeFilter(model)
 
 
 # Loss and optimizer
