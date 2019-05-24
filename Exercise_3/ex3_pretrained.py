@@ -178,6 +178,7 @@ current_epoch_validation_loss =[]
 n_epochs_stop = 5
 min_val_loss = np.Inf
 epochs_no_improve = 0
+best_model = None
 
 local_train_loss = [];
 local_validation_loss = [];
@@ -228,7 +229,6 @@ for epoch in range(num_epochs):
         # TODO: Q2.b Use the early stopping mechanism from previous questions to save   #
         # the model which has acheieved the best validation accuracy so-far.            #
         #################################################################################
-        best_model = None
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         # If the validation loss is at a minimum
         val_loss = 100*(correct/float(total))
