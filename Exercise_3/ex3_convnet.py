@@ -27,15 +27,16 @@ print('Using device: %s'%device)
 input_size = 3
 num_classes = 10
 hidden_size = [128, 512, 512, 512, 512, 512]
-num_epochs = 20
+num_epochs = 30
 batch_size = 200
 learning_rate = 2e-3
 learning_rate_decay = 0.95
 reg=0.001
 num_training= 49000
 num_validation =1000
-norm_layer = None
+norm_layer = True
 print(hidden_size)
+
 
 
 #-------------------------------------------------
@@ -47,23 +48,42 @@ print(hidden_size)
 #################################################################################
 data_aug_transforms = []
 # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
+selections = [
+    transforms.ColorJitter(brightness=(0.0,2.0), contrast=(0.0,2.0), saturation=(0.0,2.0), hue=(-0.5,0.5)),
+    transforms.Grayscale(3),
+    transforms.RandomHorizontalFlip(p=1.0),
+    transforms.RandomVerticalFlip(p=1),
+    transforms.RandomRotation(180)
+]
 
+# choice_index = np.random.choice(5, 3, replace=False)
+
+choice_index = [0, 1, 2]
+
+data_aug_transforms = [
+    selections[choice_index[0]],
+    selections[choice_index[1]],
+    selections[choice_index[2]],
+]
+# print(choice_index)
+print(data_aug_transforms, "\n")
 # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 norm_transform = transforms.Compose(data_aug_transforms+[transforms.ToTensor(),
-                                     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-                                     ])
+                                    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+                                    ]
+                                    )
 test_transform = transforms.Compose([transforms.ToTensor(),
-                                     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-                                     ])
+                                    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+                                    ])
 cifar_dataset = torchvision.datasets.CIFAR10(root='datasets/',
-                                           train=True,
-                                           transform=norm_transform,
-                                           download=False)
+                                        train=True,
+                                        transform=norm_transform,
+                                        download=False)
 
 test_dataset = torchvision.datasets.CIFAR10(root='datasets/',
-                                          train=False,
-                                          transform=test_transform
-                                          )
+                                        train=False,
+                                        transform=test_transform
+                                        )
 #-------------------------------------------------
 # Prepare the training and validation splits
 #-------------------------------------------------
@@ -76,16 +96,16 @@ val_dataset = torch.utils.data.Subset(cifar_dataset, mask)
 # Data loader
 #-------------------------------------------------
 train_loader = torch.utils.data.DataLoader(dataset=train_dataset,
-                                           batch_size=batch_size,
-                                           shuffle=True)
+                                        batch_size=batch_size,
+                                        shuffle=True)
 
 val_loader = torch.utils.data.DataLoader(dataset=val_dataset,
-                                           batch_size=batch_size,
-                                           shuffle=False)
+                                        batch_size=batch_size,
+                                        shuffle=False)
 
 test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
-                                          batch_size=batch_size,
-                                          shuffle=False)
+                                        batch_size=batch_size,
+                                        shuffle=False)
 
 
 #-------------------------------------------------
@@ -102,14 +122,20 @@ class ConvNet(nn.Module):
         # For Q2.a make use of BatchNorm2d layer from the torch.nn module.              #
         # For Q3.b Use Dropout layer from the torch.nn module.                          #
         #################################################################################
-        layers = []
+        self.layers = []
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-        self.conv1 = nn.Conv2d(in_channels=3, out_channels=128, kernel_size=3, stride=1, padding=1)
-        self.conv2 = nn.Conv2d(in_channels=128, out_channels=512, kernel_size=3, stride=1, padding=1)
-        self.conv3 = nn.Conv2d(in_channels=512, out_channels=512, kernel_size=3, stride=1, padding=1)
+        self.norm_layer = norm_layer
+        self.layers = nn.ModuleList([
+            nn.Conv2d(in_channels=3, out_channels=128, kernel_size=3, stride=1, padding=1),
+            nn.Conv2d(in_channels=128, out_channels=512, kernel_size=3, stride=1, padding=1),
+            nn.Conv2d(in_channels=512, out_channels=512, kernel_size=3, stride=1, padding=1),
+            nn.Conv2d(in_channels=512, out_channels=512, kernel_size=3, stride=1, padding=1),
+            nn.Conv2d(in_channels=512, out_channels=512, kernel_size=3, stride=1, padding=1)
+        ])
         self.pool = nn.MaxPool2d(kernel_size=2, stride=2, padding=0)
         self.fc = torch.nn.Linear(512, 10)
-
+        self.dropout = nn.Dropout(p=0.5)
+        print(self.dropout, "\n")
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
     def forward(self, x):
@@ -117,16 +143,16 @@ class ConvNet(nn.Module):
         # TODO: Implement the forward pass computations                                 #
         #################################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-        
-        # layer 1: in_channels=3, out_channels=128
-        x = nn.functional.relu(self.pool(self.conv1(x)))
-        # layer 2: in_channels=128, out_channels=512
-        x = nn.functional.relu(self.pool(self.conv2(x)))
-        # layer 3-5: in_channels=512, out_channels=512
-        x = nn.functional.relu(self.pool(self.conv3(x)))
-        x = nn.functional.relu(self.pool(self.conv3(x)))
-        x = nn.functional.relu(self.pool(self.conv3(x)))
-        # fully connected
+        if self.norm_layer is None:
+            for h_layer in self.layers:
+                x = nn.functional.relu(self.pool(h_layer(x)))
+                x = self.dropout(x)
+        else:
+            for h_layer in self.layers:
+                x = nn.BatchNorm2d(h_layer.out_channels).cuda()(h_layer(x))
+                x = nn.functional.relu(self.pool(x))
+                x = self.dropout(x)
+
         x = x.view(-1, 512)
         out = self.fc(x)
 
@@ -146,7 +172,7 @@ def PrintModelSize(model, disp=True):
     #################################################################################
     # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
     model_sz = sum(p.numel() for p in model.parameters() if p.requires_grad)
-
+    print("\nModel Size: ", model_sz)
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
     return model_sz
 
@@ -161,7 +187,24 @@ def VisualizeFilter(model):
     # You can use matlplotlib.imshow to visualize an image in python                #
     #################################################################################
     # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
+    # filters = model.layers[0].weight
+    # filters = filters.cpu().detach().numpy()
+    # f_min, f_max = filters.min(), filters.max()
+    # filters = (filters - f_min) / (f_max - f_min)
+
+    # fig=plt.figure(figsize=(3, 3))
+    # columns = 16
+    # rows = 8
+    # for i in range(1, 128+1):
+    #     img = filters[i-1]
+    #     fig.add_subplot(rows, columns, i)
+    #     plt.imshow(img)
+    # plt.show()
+    
     pass
+    
+
+
     # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
 #======================================================================================
@@ -185,7 +228,7 @@ PrintModelSize(model)
 # # Q1.a: Implementing the function to visualize the filters in the first conv layers.
 # # Visualize the filters before training
 # #======================================================================================
-# VisualizeFilter(model)
+VisualizeFilter(model)
 
 
 # Loss and optimizer
@@ -195,6 +238,8 @@ optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=
 # Train the model
 lr = learning_rate
 total_step = len(train_loader)
+x_axis = []
+y_axis = []
 for epoch in range(num_epochs):
     for i, (images, labels) in enumerate(train_loader):
         # Move tensors to the configured device
@@ -203,17 +248,15 @@ for epoch in range(num_epochs):
 
         # Forward pass
         outputs = model(images)
-
+        
         loss = criterion(outputs, labels)
-
         # Backward and optimize
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-
         if (i+1) % 100 == 0:
             print ('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}'
-                   .format(epoch+1, num_epochs, i+1, total_step, loss.item()))
+                .format(epoch+1, num_epochs, i+1, total_step, loss.item()))
 
     # Code to update the lr
     lr *= learning_rate_decay
@@ -237,10 +280,30 @@ for epoch in range(num_epochs):
         #################################################################################
         best_model = None
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
+        loss = criterion(outputs, labels)
+        # x_axis.append(loss)
+        # y_axis.append(epoch+1)
+        best_loss = float("inf")
+        best_epoch = None
+        epochs_track = 0
+        
+        if epochs_track < 3 and loss.item() < best_loss:
+            best_model = model
+            best_loss = loss.item()
+            epochs_track = 0
+            best_epoch = epoch+1
+            print("Best loss", best_loss)
+        elif loss.item() > best_loss:
+            epochs_track += 1
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 
     model.train()
+# plt.plot(y_axis, x_axis, '.-')
+# plt.title('Loss Curve')
+# plt.xlabel('Epochs')
+# plt.ylabel('Loss')
+# plt.show()
 
 # Test the model
 # In test phase, we don't need to compute gradients (for memory efficiency)
@@ -250,7 +313,8 @@ model.eval()
 # best model so far and perform testing with this model.                        #
 #################################################################################
 # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-
+model = best_model
+print("Best model loss: ", best_loss, "\nbest model epoch: ", best_epoch)
 # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
 with torch.no_grad():
     correct = 0
@@ -272,5 +336,7 @@ with torch.no_grad():
 VisualizeFilter(model)
 # Save the model checkpoint
 torch.save(model.state_dict(), 'model.ckpt')
+
+print("\n\n")
 
 
